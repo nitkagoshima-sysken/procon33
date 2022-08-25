@@ -47,8 +47,6 @@ async def get_match() -> tuple[bool, dict | str]:
                 else:
                     data = await res.text()
                     success = False
-                print(data)
-                print(type(data))
                 return (success, data)
         except Exception as err:
             print(err)
