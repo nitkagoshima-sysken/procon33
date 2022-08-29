@@ -27,8 +27,8 @@ class BatchGenerator(keras.utils.Sequence):
             1バッチ分の前処理済みの問題と正答のタプル
         """
 
-        batch_begin = self.batch_size * idx + 1
-        batch_end = self.batch_size * (idx + 1)
+        batch_begin = self.data_range_begin + self.batch_size * idx
+        batch_end = self.data_range_begin + self.batch_size * (idx + 1) - 1
 
         if batch_end > self.data_range_end:
             batch_end = self.data_range_end
