@@ -6,8 +6,8 @@ import wave
 import json
 
 
-HOST = 'https://procon33-practice.kosen.work'
-TOKEN = 'da6e2f693fb977815d18fcb4cbed9b842a7af07d40f6f351731a1d3a5ec2895d'
+HOST = ''
+TOKEN = ''
 HEADER = {
     'procon-token': TOKEN
 }
