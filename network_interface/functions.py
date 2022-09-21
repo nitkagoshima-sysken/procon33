@@ -61,7 +61,7 @@ async def get_problem() -> tuple[bool, dict | str]:
         リクエスト成功時はレスポンスとして以下のプロパティを含むdictを返す
         id: 問題ID
         chunks: 分割数。整数
-        start_at: 開始時間のunixtime
+        starts_at: 開始時間のunixtime
         time_limit: 制限時間。単位は秒。整数
         data: 重ね合わせ数。整数
         リクエスト失敗時はレスポンスとしてその概要のstrを返す
