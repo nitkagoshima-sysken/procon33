@@ -1,5 +1,6 @@
 import tkinter
 
+from model.predict import predict
 from user_interface.setup import setup
 from network_interface.functions import async_runner, get_match, get_problem, get_chunk, get_file, answer
 
@@ -13,9 +14,10 @@ class App:
             'get problem': async_runner(get_problem),
             'get chunk': async_runner(get_chunk),
             'get file': async_runner(get_file),
-            'submit answer': async_runner(answer)
+            'submit answer': async_runner(answer),
+            'predict': predict
         }
-        setup(self.app, functions)
+        setup(self.app, functions, 'solver')
 
     def run(self):
         self.app.mainloop()

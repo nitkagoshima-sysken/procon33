@@ -23,9 +23,9 @@ def learn(model: tf.keras.models.Model) -> tuple[tf.keras.models.Model, list[flo
 
     # 自らの環境でのデータセットへのパスを設定する必要がある
     train_generator = BatchGenerator(
-        'D:/procon33_dataset/', 1, 100000, batch_size=8)
+        'D:/procon33_dataset/', 1, 100000, batch_size=BATCH_SIZE)
     val_generator = BatchGenerator(
-        'D:/procon33_dataset/', 100001, 110000, batch_size=8)
+        'D:/procon33_dataset/', 100001, 110000, batch_size=BATCH_SIZE)
 
     history = model.fit(
         train_generator,
@@ -49,7 +49,7 @@ def test(model: tf.keras.models.Model) -> tuple[float, float]:
     """
 
     test_generator = BatchGenerator(
-        'D:/procon33_dataset/', 110001, 120000, batch_size=8)
+        'D:/procon33_dataset/', 110001, 120000, batch_size=BATCH_SIZE)
 
     test_loss, test_acc = model.evaluate(
         test_generator,
@@ -60,18 +60,19 @@ def test(model: tf.keras.models.Model) -> tuple[float, float]:
 
 
 if __name__ == '__main__':
+    with tf.device('/cpu:0'):
 
-    model_name = 'solver'
-    model_path = './model/' + model_name
-    model = tf.keras.models.load_model(model_path)
+        model_name = 'solver'
+        model_path = './model/' + model_name
+        model = tf.keras.models.load_model(model_path)
 
-    model, train_loss, train_acc, val_loss, val_acc = learn(model)
-    print(train_loss, train_acc, val_loss, val_acc)
+        model, train_loss, train_acc, val_loss, val_acc = learn(model)
+        print(train_loss, train_acc, val_loss, val_acc)
 
-    model.save(model_path)
+        model.save(model_path)
 
-    learning_progress(model_name, train_loss, train_acc, val_loss, val_acc)
+        learning_progress(model_name, train_loss, train_acc, val_loss, val_acc)
 
-    test_loss, test_acc = test(model)
-    print('test_loss:', test_loss)
-    print('test_acc:', test_acc)
+        test_loss, test_acc = test(model)
+        print('test_loss:', test_loss)
+        print('test_acc:', test_acc)
