@@ -87,6 +87,7 @@ def answer_wrapper(fn, problem_id_text, answers_text, textBoxes):
         answers = answers_text.get('1.0', 'end').replace('\n', '')[1:-1].split(', ')
         for i in range(len(answers)):
             answers[i] = answers[i].zfill(2)
+        answers.sort()
         success, data = fn(problem_id, answers)
         print(answers)
 
