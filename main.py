@@ -1,6 +1,7 @@
 import tkinter
 
-from model.predict import predict
+from model.predict import predict as predict_by_cnn
+from model.correlation.predict import predict as predict_by_raw_sound_correlation
 from user_interface.setup import setup
 from network_interface.functions import async_runner, get_match, get_problem, get_chunk, get_file, answer
 
@@ -15,7 +16,7 @@ class App:
             'get chunk': async_runner(get_chunk),
             'get file': async_runner(get_file),
             'submit answer': async_runner(answer),
-            'predict': predict
+            'predict': predict_by_raw_sound_correlation
         }
         setup(self.app, functions, 'solver')
 

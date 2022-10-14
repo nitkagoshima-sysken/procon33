@@ -1,5 +1,36 @@
 from __future__ import annotations
 import numpy as np
+import math
+
+
+def concatenate_split_data(problem, nsplit):
+    audio_data = np.zeros(0)
+
+    # 分割データがすべてそろっていない場合、
+    # 与えられている分割データのサンプル数の平均をとり、 その平均が欠けている分割データのサンプル数であると考えて0でパディングする
+    if len(problem) != nsplit:
+        sample_sum = 0
+        for i in range(len(problem)):
+            sample_sum += len(problem[i][1])
+        sample_avg = sample_sum / len(problem)
+
+        exist_data_number = []
+        lack_data_number = []
+        for i in range(len(problem)):
+            exist_data_number.append(problem[i][0])
+        for i in range(1, nsplit + 1):
+            if i not in exist_data_number:
+                lack_data_number.append(i)
+
+        for i in lack_data_number:
+            problem.append((i, np.zeros(math.floor(sample_avg))))
+
+    # タプルの1つめを基準にソートして分割データを結合
+    problem.sort(key=lambda x: x[0])
+    for _, split_data in problem:
+        audio_data = np.concatenate([audio_data, split_data])
+    
+    return audio_data
 
 
 def to_file_name(speech_number: int, extension: bool = True) -> str:
