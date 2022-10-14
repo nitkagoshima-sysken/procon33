@@ -21,6 +21,6 @@ def predict(model_name:str, problem: list[tuple[int, np.ndarray[np.float64]]], n
     for _, split_data in problem:
         audio_data = np.concatenate([audio_data, split_data])
     
-    answer = predict_by_sound_correlation(problem)
+    answer = predict_by_sound_correlation(audio_data)
 
     return answer
