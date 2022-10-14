@@ -87,8 +87,8 @@ def answer_wrapper(fn, problem_id_text, answers_text, textBoxes):
         answers = answers_text.get('1.0', 'end').replace('\n', '')[1:-1].split(', ')
         for i in range(len(answers)):
             answers[i] = answers[i].zfill(2)
+        answers.sort()
         success, data = fn(problem_id, answers)
-        print(answers)
 
         for key in textBoxes:
             textBoxes[key]['state'] = 'normal'
@@ -121,7 +121,6 @@ def predict_wrapper(predict, model_name, match_id_text, problem_id_text, nsplit_
         for file_name in directory_list:
             file_number = int(file_name[7])
             file_data, sr = librosa.load(save_path + file_name)
-            print(file_number, len(file_data))
             problem.append((file_number, file_data))
         result = predict(model_name, problem, nsplit)
 
