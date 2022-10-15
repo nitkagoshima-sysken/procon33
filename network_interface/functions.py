@@ -9,6 +9,7 @@ import json
 HOST = ''
 TOKEN = ''
 HEADER = {
+    'Content-Type': 'application/json',
     'procon-token': TOKEN
 }
 
@@ -40,7 +41,7 @@ async def get_match() -> tuple[bool, dict | str]:
     """
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(HOST + '/match', headers=HEADER, ssl=True) as res:
+            async with session.get(HOST + '/match', headers=HEADER, ssl=False) as res:
                 if res.status == requests.codes.ok:
                     data = await res.json()
                     success = True
@@ -61,16 +62,17 @@ async def get_problem() -> tuple[bool, dict | str]:
         リクエスト成功時はレスポンスとして以下のプロパティを含むdictを返す
         id: 問題ID
         chunks: 分割数。整数
-        starts_at: 開始時間のunixtime
+        start_at: 開始時間のunixtime
         time_limit: 制限時間。単位は秒。整数
         data: 重ね合わせ数。整数
         リクエスト失敗時はレスポンスとしてその概要のstrを返す
     """
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(HOST + '/problem', headers=HEADER, ssl=True) as res:
+            async with session.get(HOST + '/problem', headers=HEADER, ssl=False) as res:
                 if res.status == requests.codes.ok:
                     data = await res.json()
+                    print(data)
                     success = True
                 else:
                     data = await res.text()
@@ -95,7 +97,7 @@ async def get_chunk(n_chunk: int) -> tuple[bool, dict | str]:
     """
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.post(HOST + '/problem/chunks?n=' + str(n_chunk), headers=HEADER, ssl=True) as res:
+            async with session.post(HOST + '/problem/chunks?n=' + str(n_chunk), headers=HEADER, ssl=False) as res:
                 if res.status == requests.codes.ok:
                     data = await res.json()
                     success = True
@@ -122,7 +124,7 @@ async def get_file(file_name: str, save_path: str) -> tuple[bool, bytes | str]:
     """
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(HOST + '/problem/chunks/' + file_name, headers=HEADER, ssl=True) as res:
+            async with session.get(HOST + '/problem/chunks/' + file_name, headers=HEADER, ssl=False) as res:
                 if res.status == requests.codes.ok:
                     data = await res.read()
                     success = True
@@ -157,12 +159,28 @@ async def answer(problem_id: str, answers: list[str]) -> tuple[bool, dict | str]
     """
 
     body = json.dumps({'problem_id': problem_id, 'answers': answers})
-
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.post(HOST + '/problem', data=body, headers=HEADER, ssl=True) as res:
+            async with session.post(HOST + '/problem', data=body, headers=HEADER, ssl=False) as res:
                 if res.status == requests.codes.ok:
                     data = await res.json()
+                    success = True
+                else:
+                    data = await res.text()
+                    print(f"ans status code: {res.status}")
+                    print(data)
+                    success = False
+                return (success, data)
+        except Exception as err:
+            print(err)
+
+
+async def get_test():
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.get(HOST + '/test', headers=HEADER, ssl=False) as res:
+                if res.status == requests.codes.ok:
+                    data = await res.text()
                     success = True
                 else:
                     data = await res.text()

@@ -7,7 +7,6 @@ from model.dataset.utility import to_file_name
 
 def predict_by_sound_correlation(problem):
     # マッチングの開始位置のシフト量
-    # TODO: 128, 32
     shift_width = 128
     # 48000Hzはサンプリングレートとして高いから、サンプル数を落としてもある程度は耐える
     # サンプリングレートを何分の1にするか

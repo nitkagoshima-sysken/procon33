@@ -1,5 +1,5 @@
 import tkinter as tk
-from user_interface.event import get_match_wrapper, get_problem_wrapper, get_file_wrapper, answer_wrapper, predict_wrapper
+from user_interface.event import get_match_wrapper, get_problem_wrapper, get_file_wrapper, answer_wrapper, predict_wrapper, test_wrapper
 
 
 def setup(app, functions, model_name):
@@ -161,3 +161,14 @@ def setup(app, functions, model_name):
         height=1
     )
     buttonPredict.place(x=700, y=50)
+
+    textTest = tk.Text(app, width=20, height=1)
+    textTest.place(x=700, y=400)
+    buttonTest = tk.Button(
+        app,
+        text='test',
+        command=test_wrapper(functions['get test'], textTest),
+        width=10,
+        height=1
+    )
+    buttonTest.place(x=700, y=300)

@@ -37,7 +37,7 @@ def get_problem_wrapper(fn, textBoxes):
             textBoxes['chunks'].insert(1.0, str(data['chunks']))
             # unixtimeを日本時間に変換
             JST = timezone(timedelta(hours=+9), 'JST')
-            start_at = datetime.fromtimestamp(data['starts_at']).replace(tzinfo=timezone.utc).astimezone(tz=JST)
+            start_at = datetime.fromtimestamp(data['start_at']).replace(tzinfo=timezone.utc).astimezone(tz=JST)
             textBoxes['start_at'].insert(1.0, start_at.strftime('%H:%M:%S'))
             textBoxes['time_limit'].insert(1.0, str(data['time_limit']) + '秒')
             textBoxes['data'].insert(1.0, str(data['data']))
@@ -129,4 +129,10 @@ def predict_wrapper(predict, model_name, match_id_text, problem_id_text, nsplit_
         result_text.insert('1.0', str(result))
         result_text['state'] = 'disabled'
 
+    return wrapper
+
+def test_wrapper(fn, textTest):
+    def wrapper():
+        success, data = fn()
+        textTest.insert('1.0', str(data))
     return wrapper
